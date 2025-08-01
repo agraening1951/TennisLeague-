@@ -15,7 +15,7 @@ public class JdbcCoachDao implements CoachDao {
 
     @Override
     public void addCoach(Coach coach) {
-        String sql = "INSERT INTO Coach (CoachID, Name, TelephoneNumber, TeamNumber) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO coaches (coach_id, name, telephone_number, team_number) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, coach.getCoachId());
             ps.setString(2, coach.getName());
@@ -29,7 +29,7 @@ public class JdbcCoachDao implements CoachDao {
 
     @Override
     public Coach findById(int id) {
-        String sql = "SELECT * FROM Coach WHERE CoachID = ?";
+        String sql = "SELECT * FROM coaches WHERE coach_id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
@@ -42,22 +42,30 @@ public class JdbcCoachDao implements CoachDao {
 
     @Override
     public List<Coach> findAll() {
-        String sql = "SELECT * FROM Coach";
-        List<Coach> list = new ArrayList<>();
-        try (PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        List<Coach> coaches = new ArrayList<>();
+        String sql = "SELECT coach_id, name, telephone_number, team_number FROM coaches";
+        
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
             while (rs.next()) {
-                list.add(mapRow(rs));
+                Coach coach = new Coach();
+                coach.setCoachId(rs.getInt("coach_id"));
+                coach.setName(rs.getString("name"));
+                coach.setTelephoneNumber(rs.getString("telephone_number"));
+                coach.setTeamNumber(rs.getInt("team_number"));
+                coaches.add(coach);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error retrieving coaches", e);
         }
-        return list;
+        
+        return coaches;
     }
 
     @Override
     public void updateCoach(Coach coach) {
-        String sql = "UPDATE Coach SET Name = ?, TelephoneNumber = ?, TeamNumber = ? WHERE CoachID = ?";
+        String sql = "UPDATE coaches SET name = ?, telephone_number = ?, team_number = ? WHERE coach_id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, coach.getName());
             ps.setString(2, coach.getTelephoneNumber());
@@ -70,10 +78,10 @@ public class JdbcCoachDao implements CoachDao {
     }
 
     @Override
-    public void deleteCoach(int id) {
-        String sql = "DELETE FROM Coach WHERE CoachID = ?";
+    public void deleteCoach(int coachId) {
+        String sql = "DELETE FROM coaches WHERE coach_id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, id);
+            ps.setInt(1, coachId);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting coach", e);
@@ -82,10 +90,10 @@ public class JdbcCoachDao implements CoachDao {
 
     private Coach mapRow(ResultSet rs) throws SQLException {
         return new Coach(
-                rs.getInt("CoachID"),
-                rs.getString("Name"),
-                rs.getString("TelephoneNumber"),
-                rs.getInt("TeamNumber")
+                rs.getInt("coach_id"),
+                rs.getString("name"),
+                rs.getString("telephone_number"),
+                rs.getInt("team_number")
         );
     }
 }

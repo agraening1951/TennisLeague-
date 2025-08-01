@@ -21,4 +21,8 @@
             <version>8.0.33</version> <!-- Or use 9.4.0 if needed -->
         </dependency>
     </dependencies>
+
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+    </build>
 </project>

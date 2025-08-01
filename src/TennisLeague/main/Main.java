@@ -1,11 +1,16 @@
 package TennisLeague.main;
+
 import TennisLeague.DB.DBConnection;
 import TennisLeague.dao.TeamDao;
 import TennisLeague.dao.CoachDao;
+import TennisLeague.dao.PlayerDao;
 import TennisLeague.dao.JdbcTeamDao;
 import TennisLeague.dao.JdbcCoachDao;
+import TennisLeague.dao.JdbcPlayerDao;
 import TennisLeague.model.Team;
 import TennisLeague.model.Coach;
+import TennisLeague.model.Player;
+import TennisLeague.util.TableFormatter;
 
 import java.sql.Connection;
 import java.util.List;
@@ -14,10 +19,11 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         try (Connection connection = DBConnection.getConnection();
-             Scanner scanner = new Scanner(System.in)) {
+                Scanner scanner = new Scanner(System.in)) {
 
             TeamDao teamDao = new JdbcTeamDao(connection);
             CoachDao coachDao = new JdbcCoachDao(connection);
+            PlayerDao playerDao = new JdbcPlayerDao(connection);
 
             int choice;
             do {
@@ -30,6 +36,11 @@ public class Main {
                 System.out.println("6. Add a coach");
                 System.out.println("7. Update a coach");
                 System.out.println("8. Delete a coach");
+                System.out.println("9. View all players");
+                System.out.println("10. Add a player");
+                System.out.println("11. Update a player");
+                System.out.println("12. Delete a player");
+                System.out.println("13. View players by team");
                 System.out.println("0. Exit");
                 System.out.print("Enter choice: ");
                 choice = Integer.parseInt(scanner.nextLine());
@@ -37,9 +48,7 @@ public class Main {
                 switch (choice) {
                     case 1:
                         List<Team> teams = teamDao.getAllTeams();
-                        for (Team team : teams) {
-                            System.out.println(team);
-                        }
+                        TableFormatter.printTeamsTable(teams);
                         break;
                     case 2:
                         System.out.print("Enter team number: ");
@@ -73,9 +82,7 @@ public class Main {
                         break;
                     case 5:
                         List<Coach> coaches = coachDao.findAll();
-                        for (Coach coach : coaches) {
-                            System.out.println(coach);
-                        }
+                        TableFormatter.printCoachesTable(coaches);
                         break;
                     case 6:
                         System.out.print("Enter coach ID: ");
@@ -106,6 +113,58 @@ public class Main {
                         int cDeleteID = Integer.parseInt(scanner.nextLine());
                         coachDao.deleteCoach(cDeleteID);
                         System.out.println("Coach deleted.");
+                        break;
+                    case 9:
+                        List<Player> players = playerDao.getAllPlayers();
+                        TableFormatter.printPlayersTable(players);
+                        break;
+                    case 10:
+                        System.out.print("Enter player name: ");
+                        String pName = scanner.nextLine();
+                        System.out.print("Enter position: ");
+                        String pPosition = scanner.nextLine();
+                        System.out.print("Enter age: ");
+                        int pAge = Integer.parseInt(scanner.nextLine());
+                        System.out.print("Enter team ID: ");
+                        int pTeamId = Integer.parseInt(scanner.nextLine());
+                        System.out.print("Enter phone number: ");
+                        String pPhone = scanner.nextLine();
+                        playerDao.addPlayer(new Player(0, pName, pPosition, pAge, pTeamId, pPhone));
+                        System.out.println("Player added.");
+                        break;
+                    case 11:
+                        System.out.print("Enter player ID to update: ");
+                        int pUpdateID = Integer.parseInt(scanner.nextLine());
+                        System.out.print("Enter new name: ");
+                        String pUpdateName = scanner.nextLine();
+                        System.out.print("Enter new position: ");
+                        String pUpdatePosition = scanner.nextLine();
+                        System.out.print("Enter new age: ");
+                        int pUpdateAge = Integer.parseInt(scanner.nextLine());
+                        System.out.print("Enter new team ID: ");
+                        int pUpdateTeamId = Integer.parseInt(scanner.nextLine());
+                        System.out.print("Enter new phone: ");
+                        String pUpdatePhone = scanner.nextLine();
+                        playerDao.updatePlayer(new Player(pUpdateID, pUpdateName, pUpdatePosition, pUpdateAge,
+                                pUpdateTeamId, pUpdatePhone));
+                        System.out.println("Player updated.");
+                        break;
+                    case 12:
+                        System.out.print("Enter player ID to delete: ");
+                        int pDeleteID = Integer.parseInt(scanner.nextLine());
+                        playerDao.deletePlayer(pDeleteID);
+                        System.out.println("Player deleted.");
+                        break;
+                    case 13:
+                        System.out.print("Enter team ID to view players: ");
+                        int viewTeamId = Integer.parseInt(scanner.nextLine());
+                        List<Player> teamPlayers = playerDao.getPlayersByTeamId(viewTeamId);
+                        if (teamPlayers.isEmpty()) {
+                            System.out.println("No players found for this team.");
+                        } else {
+                            System.out.println("\n--- Players for Team ID: " + viewTeamId + " ---");
+                            TableFormatter.printPlayersTable(teamPlayers);
+                        }
                         break;
                     case 0:
                         System.out.println("Exiting program.");
