@@ -1,32 +1,32 @@
 # Tennis League Management System
 
-## Project Status ✅
+## Project Status 
 
 Your Tennis League Management System now **FULLY MEETS** all the specified requirements:
 
-### ✅ Database Setup - COMPLETE
-- **Teams Table**: ✅ Implemented with proper relationships
-- **Players Table**: ✅ Implemented with team associations  
-- **Coaches Table**: ✅ Implemented with team associations
-- **Relationships & Constraints**: ✅ Foreign keys and proper constraints set
+###  Database Setup - COMPLETE
+- **Teams Table**:  Implemented with proper relationships
+- **Players Table**:  Implemented with team associations  
+- **Coaches Table**:  Implemented with team associations
+- **Relationships & Constraints**:  Foreign keys and proper constraints set
 
-### ✅ Team Management - COMPLETE
-- **Add a Team**: ✅ Users can add new team records
-- **Edit a Team**: ✅ Users can update team details
-- **Delete a Team**: ✅ Users can remove teams
-- **View Teams**: ✅ Users can view all teams with details
+###  Team Management - COMPLETE
+- **Add a Team**:  Users can add new team records
+- **Edit a Team**:  Users can update team details
+- **Delete a Team**:  Users can remove teams
+- **View Teams**:  Users can view all teams with details
 
-### ✅ Player Management - COMPLETE
-- **Add a Player**: ✅ Users can add players with team associations
-- **Edit a Player**: ✅ Users can update player details
-- **Delete a Player**: ✅ Users can remove players
-- **View Players**: ✅ Users can view all players and filter by team
+###  Player Management - COMPLETE
+- **Add a Player**:  Users can add players with team associations
+- **Edit a Player**:  Users can update player details
+- **Delete a Player**:  Users can remove players
+- **View Players**:  Users can view all players and filter by team
 
-### ✅ Coach Management - COMPLETE  
-- **Add a Coach**: ✅ Users can add coaches with team specifications
-- **Edit a Coach**: ✅ Users can update coach details
-- **Delete a Coach**: ✅ Users can remove coaches
-- **View Coaches**: ✅ Users can view all coaches with details
+###  Coach Management - COMPLETE  
+- **Add a Coach**:  Users can add coaches with team specifications
+- **Edit a Coach**:  Users can update coach details
+- **Delete a Coach**:  Users can remove coaches
+- **View Coaches**:  Users can view all coaches with details
 
 ## How to Run
 
